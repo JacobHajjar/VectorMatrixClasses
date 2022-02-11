@@ -1,6 +1,7 @@
 //============================================================
 // FILE: vector_3dT.h
 //============================================================
+#define _USE_MATH_DEFINES
 
 #ifndef __vector3d_T_H__
 #define __vector3d_T_H__
@@ -59,32 +60,20 @@ public:
                     { u[0] + v[0], u[1] + v[1], u[2] + v[2], 0} );
   }  
 
-  friend vector3d<T> operator-(const vector3d<T>& u, const vector3d<T>& v) { 
-    check_equal_dims(u, v);
-    return vector3d<T>(u.name_ + "-" + v.name_, u.dims_,
-                    { u[0] - v[0], u[1] - v[1], u[2] - v[2], 0} );
-   }
+  friend vector3d<T> operator-(const vector3d<T>& u, const vector3d<T>& v) { return vector3d<T>(u) -= v;}
 //---------------------------------------------------------------------
   friend vector3d<T> operator+(T k, const vector3d<T>& v) {
     return vector3d<T>(std::to_string(k) + "+" + v.name_, v.dims_, { k + v[0], k + v[1], k + v[2], 0 });
   }
-  friend vector3d<T> operator+(const vector3d<T>& v, T k) { 
-    return vector3d<T>(v.name_ + "+" + std::to_string(k), v.dims_, { k + v[0], k + v[1], k + v[2], 0 });
-  }
+  friend vector3d<T> operator+(const vector3d<T>& v, T k) { /* TODO */ }
 //---------------------------------------------------------------------
-  friend vector3d<T> operator-(T k, const vector3d<T>& v) { 
-    return vector3d<T>(std::to_string(k) + "-" + v.name_, v.dims_, { k - v[0], k - v[1], k - v[2], 0 });
-  }
-  friend vector3d<T> operator-(const vector3d<T>& v, T k) { 
-    return vector3d<T>(v.name_ + "-" + std::to_string(k), v.dims_, { v[0] - k, v[1] - k, v[2] - k, 0 });
-   }
+  friend vector3d<T> operator-(T k, const vector3d<T>& v) { /* TODO */ }
+  friend vector3d<T> operator-(const vector3d<T>& v, T k) { /* TODO */ }
   //---------------------------------------------------------------------
   friend vector3d<T> operator*(T k, const vector3d<T>& v) {
     return vector3d<T>(std::to_string(k) + v.name_, v.dims_, { k * v[0], k * v[1], k * v[2], 0 });
   }
-  friend vector3d<T> operator*(const vector3d<T>& v, T k) { 
-    return vector3d<T>(v.name_ + std::to_string(k), v.dims_, {v[0] * k,v[1] * k,v[2] * k, 0 });
-  };
+  friend vector3d<T> operator*(const vector3d<T>& v, T k) { /* TODO */ };
   //---------------------------------------------------------------------
   friend vector3d<T> operator/(const vector3d<T>& v, T k) {
     if (k == 0) { throw new std::invalid_argument("divide by zero"); }
@@ -165,15 +154,9 @@ vector3d<T>& vector3d<T>::operator+=(const vector3d<T>& v) {
   return *this;
 }
 template <typename T>
-vector3d<T>& vector3d<T>::operator-=(const vector3d<T>& v) { 
-  vector3d<T>& u = *this;
-  u[0] -= v[0];  u[1] -= v[1];  u[2] -= v[2];  u[3] = v[3];
-  return *this;
-}
+vector3d<T>& vector3d<T>::operator-=(const vector3d<T>& v) { /* TODO */ }
 //---------------------------------------------------------------------
-template <typename T> vector3d<T>& vector3d<T>::operator+=(T k) { 
-  
-}
+template <typename T> vector3d<T>& vector3d<T>::operator+=(T k) { /* TODO */ }
 template <typename T> vector3d<T>& vector3d<T>::operator-=(T k) { /* TODO */ }
 template <typename T> vector3d<T>& vector3d<T>::operator*=(T k) { /* TODO */ }
 template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) { /* TODO */ }
@@ -195,7 +178,12 @@ template <typename T>
 double vector3d<T>::magnitude() const {  return sqrt(dot(*this));  }
 
 template <typename T>
-double vector3d<T>::angle(const vector3d<T>& v) const { /* TODO */ }
+double vector3d<T>::angle(const vector3d<T>& v) const {
+ double dot = this->dot(v);
+ double mag = this->magnitude();
+ double vmag = v.magnitude();
+ return acos(dot / (mag * vmag));
+}
 //-----------------------
 template <typename T>
 vector3d<T> vector3d<T>::cross(const vector3d<T>& v) const {
@@ -212,7 +200,7 @@ template <typename T>
 vector3d<T> vector3d<T>::zero() { return vector3d<T>("zero", 3, {0, 0, 0, 0}); }
 //-----------------------
 
-static double value(double val) { return abs(val) < 1e-5 ? 0 : val; }
+static double value(double val) { return std::abs(val) < 1e-5 ? 0 : val; }
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const vector3d<T>& v) {
