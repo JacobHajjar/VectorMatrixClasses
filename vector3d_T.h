@@ -171,59 +171,60 @@ vector3d<T>& vector3d<T>::operator+=(const vector3d<T>& v) {
 template <typename T>
 vector3d<T>& vector3d<T>::operator-=(const vector3d<T>& v) { /* TODO */ }
 //---------------------------------------------------------------------
-template <typename T> vector3d<T>& vector3d<T>::operator+=(T k) {
-    vector3d<T>& u = *this;
+template <typename T> 
+vector3d<T>& vector3d<T>::operator+=(T k) { 
+  vector3d<T>& u = *this;
     u[0] += k;  u[1] += k;  u[2] += k;  u[3] = k;
     return *this;
-
 }
-template <typename T> vector3d<T>& vector3d<T>::operator-=(T k) {
-    vector3d<T>& u = *this;
+template <typename T> vector3d<T>& vector3d<T>::operator-=(T k) { 
+  vector3d<T>& u = *this;
     u[0] -= k;  u[1] -= k;  u[2] -= k;  u[3] = k;
     return *this;
-
-}
-
-template <typename T> vector3d<T>& vector3d<T>::operator*=(T k) {
-    vector3d<T>& u = *this;
+ }
+template <typename T> vector3d<T>& vector3d<T>::operator*=(T k) { 
+  vector3d<T>& u = *this;
     u[0] *= k;  u[1] *= k;  u[2] *= k;  u[3] = k;
     return *this;
-
-}
-template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) {
-    vector3d<T>& u = *this;
+ }
+template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) { 
+  vector3d<T>& u = *this;
     double kinv = 1.0 / k;
     u[0] *= kinv;  u[1] *= kinv;  u[2] *= kinv;  u[3] = k;
     return *this;
-
-}
+ }
 
 //---------------------------------------------------------------------
 template <typename T>  /* read only idx */
 T  vector3d<T>::operator[](int i) const {  check_bounds(i);  return data_[i]; }
 
-template <typename T> T& vector3d<T>::operator[](int i) { /* TODO */ } // rw idx
+template <typename T> 
+T& vector3d<T>::operator[](int i) { check_bounds(i);  return &data_[i]; } // rw idx
 
 //-----------------------
 template <typename T>
 vector3d<T> vector3d<T>::operator-() { return vector3d("-" + name_, dims_, { -data_[0], -data_[1], -data_[2], 0 }); }
 //-----------------------
 template <typename T>
-double vector3d<T>::dot(const vector3d<T>& v) const {
-  
-  return data_[0]*v[0] + data_[1]*v[1] + data_[2]*v[2];
-}
+double vector3d<T>::dot(const vector3d<T>& v) const { 
+  T resultant = 0;
+  for(int i = 0; i < v.dims_; ++i) {
+    int dot_ = data_[i]*v[i];
+    resultant += dot_;
+  }
+return resultant;
+ }
 //-----------------------
 template <typename T>
 double vector3d<T>::magnitude() const {  return sqrt(dot(*this));  }
 
 template <typename T>
-double vector3d<T>::angle(const vector3d<T>& v) const {
- double dot = this->dot(v);
- double mag = this->magnitude();
- double vmag = v.magnitude();
- return acos(dot / (mag * vmag));
-}
+double vector3d<T>::angle(const vector3d<T>& v) const { 
+  double dot = this->dot(v);
+  double mag = this->magnitude();
+  double vmag = v.magnitude();
+  return acos(dot / (mag * vmag));
+ }
 //-----------------------
 template <typename T>
 vector3d<T> vector3d<T>::cross(const vector3d<T>& v) const {
