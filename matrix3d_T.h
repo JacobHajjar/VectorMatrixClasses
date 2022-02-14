@@ -73,14 +73,21 @@ public:
   }
 
   friend matrix3d<T> operator*(T k, const matrix3d& a) { return a * k; }
+
   friend matrix3d operator/(const matrix3d& a, T k) {
     if (k == 0) { throw new std::invalid_argument("divide by zero"); }
-    double kinv = 1.0 / k;
-    return kinv * a;
+    return matrix3d(a.name() + "/" + std::to_string(k), 3,
+                    { a.cols_[0] / k, a.cols_[1] / k, a.cols_[2] / k });
   }
 //=======================================================================
-  friend matrix3d operator*(const matrix3d& m, const vector3d<T>& v) { /* TODO */ }
-  friend matrix3d operator*(const vector3d<T>& v, const matrix3d& m) { /* TODO */ }
+  friend matrix3d operator*(const matrix3d& m, const vector3d<T>& v) { 
+    return matrix3d(m.name() + v.name(), 3,
+                    { m.cols_[0] * v[0], m.cols_[1] * v[1], m.cols_[2] * v[2]});
+   }
+  friend matrix3d operator*(const vector3d<T>& v, const matrix3d& m) { 
+    return matrix3d(v.name() + m.name(), 3,
+                    { m.cols_[0] * v[0], m.cols_[1] * v[1], m.cols_[2] * v[2]});
+   }
   matrix3d<T> operator*(const matrix3d<T>& b);
 //=======================================================================
   matrix3d<T> transpose() const;// create a new matrix transpose()
@@ -319,9 +326,27 @@ template <typename T> matrix3d<T> matrix3d<T>::minors() const {
     m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0),
   });
 }
-template <typename T> matrix3d<T> matrix3d<T>::cofactor() const { /* TODO */ }
-template <typename T> matrix3d<T> matrix3d<T>::adjugate() const { /* TODO */ }
-template <typename T> matrix3d<T> matrix3d<T>::inverse() const { /* TODO */ }
+template <typename T> matrix3d<T> matrix3d<T>::cofactor() const { 
+  const matrix3d<T>& m = *this;
+  matrix3d cof("cof(" + m.name_ + ")", m.dims_);
+		for (int i = 0 ; i < m.dims_; i++)
+		{
+			for (int j = 0; j < m.dims_; j++)
+			{
+				cof[i][j] = minors()[i][j] * pow(-1, (i + j + 2));
+			}
+		}
+		return cof;
+}
+template <typename T> matrix3d<T> matrix3d<T>::adjugate() const { 
+  return cofactor().transpose();
+ }
+template <typename T> matrix3d<T> matrix3d<T>::inverse() const {
+  const matrix3d<T>& m = *this;
+  matrix3d inv("inv(" + m.name_ + ")", m.dims_);
+  return m.adjugate() / m.determinant();
+
+ }
 //=================================================================================================
 template <typename T> matrix3d<T> matrix3d<T>::identity(int dims) { 
   matrix3dD I("I", 3, {1, 0, 0,   0, 1, 0,   0,  0, 1});

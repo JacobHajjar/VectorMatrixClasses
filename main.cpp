@@ -8,7 +8,7 @@
 
 //MATRIX and VECTOR classes assignment
 #include "vector3d_T.h"
-#include "matrix3d_T.h"
+#include "matrix3d_T.h"    
 
 
 template <typename T>
@@ -170,7 +170,7 @@ void test_matrices_and_vectors() {
 int main(int argc, const char * argv[]) {
   test_vectors();
   test_matrices();
-  //test_matrices_and_vectors();
+  test_matrices_and_vectors();
     
   return 0;
 }
