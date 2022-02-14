@@ -253,13 +253,14 @@ template <typename T> matrix3d<T> matrix3d<T>::transpose() const {
 		//{
 		//	throw std::invalid_argument("Transposition can only occur for squared matrices");
 		//}
-		for (int i = 0 ; i < m.dims_ - 1; i++)
+		for (int i = 0 ; i < m.dims_; i++)
 		{
-			for (int j = 0; j < m.dims_ - 1; j++)
+			for (int j = 0; j < m.dims_; j++)
 			{
-
 				res(i, j) = m(j, i);
+        //std::cout << m(i, j) << " ";
 			}
+      //std::cout << std::endl;
 		}
 		return res;
 }
@@ -298,8 +299,8 @@ template <typename T> matrix3d<T> matrix3d<T>::adjugate() const { /* TODO */ }
 template <typename T> matrix3d<T> matrix3d<T>::inverse() const { /* TODO */ }
 //=================================================================================================
 template <typename T> matrix3d<T> matrix3d<T>::identity(int dims) { 
-  matrix3d res("I", 3);
-  
+  matrix3dD I("I", 3, {1, 0, 0,   0, 1, 0,   0,  0, 1});
+  return I;
  }
 template <typename T> matrix3d<T> matrix3d<T>::zero(int dims) { /* TODO */ }
 template <typename T> bool matrix3d<T>::operator==(const matrix3d<T>& b) const {

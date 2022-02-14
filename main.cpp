@@ -85,10 +85,12 @@ void test_matrices() {
 
   matrix3dD a("a", 3, {3, 2, 0,   0, 0, 1,   2, -2, 1});
   matrix3dD b("b", 3, {1, 0, 5,   2, 1, 6,   3,  4, 0});
+  show_mat(b.transpose());
   
-  //matrix3dD id = matrix3dD::identity(3);
-  //assert(a * id == a);
+  matrix3dD id = matrix3dD::identity(3);
+  assert(a * id == a);
   assert(a * b != -b * a);
+
   assert((a * b).transpose() == b.transpose() * a.transpose());
 
   matrix3dD acopy(a);    // copy constructor
@@ -167,7 +169,7 @@ void test_matrices_and_vectors() {
 
 
 int main(int argc, const char * argv[]) {
-  //test_vectors();
+  test_vectors();
   test_matrices();
   //test_matrices_and_vectors();
     
