@@ -86,7 +86,6 @@ public:
   }
   friend vector3d<T> operator*(const vector3d<T>& v, T k) { 
     return vector3d<T>(std::to_string(k) + v.name_, v.dims_, { k * v[0], k * v[1], k * v[2], 0 });
-
   }
   //---------------------------------------------------------------------
   friend vector3d<T> operator/(const vector3d<T>& v, T k) {
@@ -169,7 +168,11 @@ vector3d<T>& vector3d<T>::operator+=(const vector3d<T>& v) {
   return *this;
 }
 template <typename T>
-vector3d<T>& vector3d<T>::operator-=(const vector3d<T>& v) { /* TODO */ }
+vector3d<T>& vector3d<T>::operator-=(const vector3d<T>& v) { 
+  vector3d<T>& u = *this;
+  u[0] -= v[0];  u[1] -= v[1];  u[2] -= v[2];  u[3] = v[3];
+  return *this;
+}
 //---------------------------------------------------------------------
 template <typename T> 
 vector3d<T>& vector3d<T>::operator+=(T k) { 
