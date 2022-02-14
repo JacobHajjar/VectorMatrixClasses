@@ -247,20 +247,21 @@ template <typename T> matrix3d<T> matrix3d<T>::operator*(const matrix3d<T>& b) {
 //=================================================================================================
 template <typename T> matrix3d<T> matrix3d<T>::transpose() const {
   const matrix3d<T>& m = *this;
-  int columns = 3;
-  	if ( m.dims_ != columns)
-		{
-			throw std::invalid_argument("Transposition can only occur for squared matrices");
-		}
+  matrix3d res(m.name_ + "^T", m.dims_);
+
+  	//if ( m.dims_ != columns)
+		//{
+		//	throw std::invalid_argument("Transposition can only occur for squared matrices");
+		//}
 		for (int i = 0 ; i < m.dims_ - 1; i++)
 		{
-			for (int j = 0; j < columns - 1; j++)
+			for (int j = 0; j < m.dims_ - 1; j++)
 			{
 
-				m(i, j) = m.operator(j, 1);
+				res(i, j) = m(j, i);
 			}
 		}
-		return m;
+		return res;
 }
 template <typename T> T matrix3d<T>::determinant() const { /* TODO */ }
 template <typename T> T matrix3d<T>::trace() const {
@@ -296,7 +297,10 @@ template <typename T> matrix3d<T> matrix3d<T>::cofactor() const { /* TODO */ }
 template <typename T> matrix3d<T> matrix3d<T>::adjugate() const { /* TODO */ }
 template <typename T> matrix3d<T> matrix3d<T>::inverse() const { /* TODO */ }
 //=================================================================================================
-template <typename T> matrix3d<T> matrix3d<T>::identity(int dims) { /* TODO */ }
+template <typename T> matrix3d<T> matrix3d<T>::identity(int dims) { 
+  matrix3d res("I", 3);
+  
+ }
 template <typename T> matrix3d<T> matrix3d<T>::zero(int dims) { /* TODO */ }
 template <typename T> bool matrix3d<T>::operator==(const matrix3d<T>& b) const {
   check_equal_dims(b);
