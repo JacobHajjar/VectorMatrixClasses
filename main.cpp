@@ -82,6 +82,7 @@ void test_vectors() {
 
 void test_matrices() {
   print("\n====================  TESTING MATRICES  ========================");
+
   matrix3dD a("a", 3, {3, 2, 0,   0, 0, 1,   2, -2, 1});
   matrix3dD b("b", 3, {1, 0, 5,   2, 1, 6,   3,  4, 0});
   

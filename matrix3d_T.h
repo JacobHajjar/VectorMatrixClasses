@@ -61,6 +61,7 @@ public:
                     { a[0] + k, a[1] + k, a[2] + k });
   }
   friend matrix3d operator+(T k, const matrix3d& a) { return  a + k; }
+    
   friend matrix3d operator-(const matrix3d& a, T k) {
     return matrix3d(std::to_string(k) + "-" + a.name(), 3,
                     { a[0] - k, a[1] - k, a[2] - k });
@@ -166,8 +167,8 @@ template <typename T> vector3d<T>& matrix3d<T>::operator[](int i) {
   check_bounds(i);
   return cols_[i];
 }
-template <typename T> T matrix3d<T>::operator()(int row, int col) const { }
-template <typename T> T& matrix3d<T>::operator()(int row, int col) { }
+template <typename T> T matrix3d<T>::operator()(int row, int col) const { return cols_[row][col]; }
+template <typename T> T& matrix3d<T>::operator()(int row, int col) { return cols_[row][col]; }
 template <typename T> T* matrix3d<T>::opengl_memory(int row, int col) { /* TODO */ }
 // implement code here
 //=================================================================================================
@@ -251,12 +252,12 @@ template <typename T> matrix3d<T> matrix3d<T>::transpose() const {
 		{
 			throw std::invalid_argument("Transposition can only occur for squared matrices");
 		}
-		for ( unsigned int i = 0 ; i < m.dims_ - 1; i++)
+		for (int i = 0 ; i < m.dims_ - 1; i++)
 		{
-			for ( unsigned int j = 0; j < columns - 1; j++)
+			for (int j = 0; j < columns - 1; j++)
 			{
 
-				m(j,i) = operator()(i,j);
+				m(i, j) = m.operator(j, 1);
 			}
 		}
 		return m;

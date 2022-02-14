@@ -202,7 +202,7 @@ template <typename T>  /* read only idx */
 T  vector3d<T>::operator[](int i) const {  check_bounds(i);  return data_[i]; }
 
 template <typename T> 
-T& vector3d<T>::operator[](int i) { check_bounds(i);  return &data_[i]; } // rw idx
+T& vector3d<T>::operator[](int i) { check_bounds(i);  return data_[i]; } // rw idx
 
 //-----------------------
 template <typename T>
