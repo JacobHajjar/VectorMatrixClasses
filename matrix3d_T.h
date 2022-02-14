@@ -210,8 +210,22 @@ template <typename T> matrix3d<T>& matrix3d<T>::operator/=(T k) {
 
 }
 //=================================================================================================
-template <typename T> matrix3d<T>& matrix3d<T>::operator+=(const matrix3d<T>& b) { /* TODO */ }
-template <typename T> matrix3d<T>& matrix3d<T>::operator-=(const matrix3d<T>& b) { /* TODO */ }
+template <typename T> matrix3d<T>& matrix3d<T>::operator+=(const matrix3d<T>& b) { 
+  matrix3d<T>& a = *this;
+  a.name_ = a.name_ + "+=" + b.name_;
+  for (int i = 0; i < 4; ++i) {
+    a[i] += b[i];
+  }
+  return *this;
+ }
+template <typename T> matrix3d<T>& matrix3d<T>::operator-=(const matrix3d<T>& b) { 
+  matrix3d<T>& a = *this;
+  a.name_ = a.name_ + "-=" + b.name_;
+  for (int i = 0; i < 4; ++i) {
+    a[i] -= b[i];
+  }
+  return *this;
+}
 //=================================================================================================
 template <typename T> matrix3d<T> matrix3d<T>::operator-() {
   const matrix3d<T>& a = *this;
@@ -264,7 +278,18 @@ template <typename T> matrix3d<T> matrix3d<T>::transpose() const {
 		}
 		return res;
 }
-template <typename T> T matrix3d<T>::determinant() const { /* TODO */ }
+template <typename T> T matrix3d<T>::determinant() const { 
+  int det = 0;
+  
+    for (int col = 0; col < dims_; col++) {
+      int term = cols_[0][col];
+      if (col == 1) {
+        term = -cols_[0][col];
+      }
+      det += term * minors()[0][col];
+    }
+  return det;
+ }
 template <typename T> T matrix3d<T>::trace() const {
         const matrix3d<T>& m = *this;
         return m(0, 0) + m(1, 1) + m(2, 2);
