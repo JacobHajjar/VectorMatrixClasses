@@ -352,7 +352,10 @@ template <typename T> matrix3d<T> matrix3d<T>::identity(int dims) {
   matrix3dD I("I", 3, {1, 0, 0,   0, 1, 0,   0,  0, 1});
   return I;
  }
-template <typename T> matrix3d<T> matrix3d<T>::zero(int dims) { /* TODO */ }
+template <typename T> matrix3d<T> matrix3d<T>::zero(int dims) { 
+  matrix3dD Z("0", 3, {0, 0, 0,   0, 0, 0,   0,  0, 0});
+  return Z;
+ }
 template <typename T> bool matrix3d<T>::operator==(const matrix3d<T>& b) const {
   check_equal_dims(b);
   const matrix3d<T>& a = *this;
